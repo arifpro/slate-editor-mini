@@ -28,7 +28,7 @@ import {
     MarkTab,
     SaveButton,
     UploadImageButton,
-} from './icons';
+} from './buttons';
 import { isMarkActive } from './validation';
 
 const CustomSlateEditor = () => {
