@@ -1,3 +1,4 @@
+// import ImagesExample from './images';
 import RichTextExample from './richtext';
 
 const CustomSlateEditor = () => (

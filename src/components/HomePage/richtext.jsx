@@ -1,10 +1,14 @@
+/* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable prettier/prettier */
+import {css} from '@emotion/css';
+import imageExtensions from 'image-extensions';
 import isHotkey from "is-hotkey";
-import React, { useCallback, useMemo, useState } from "react";
+import isUrl from 'is-url';
+import React, {useCallback, useMemo, useState} from "react";
 import {
   MdCode,
   MdFormatBold,
@@ -13,19 +17,21 @@ import {
   MdFormatListNumbered,
   MdFormatQuote,
   MdFormatUnderlined,
-  MdLooksOne,
-  MdLooksTwo,
+
+
+  MdImage, MdLooksOne,
+  MdLooksTwo
 } from "react-icons/md";
 import {
   createEditor,
   Editor,
   Element as SlateElement,
-  Transforms,
+  Transforms
 } from "slate";
-import { withHistory } from "slate-history";
-import { Editable, Slate, useSlate, withReact } from "slate-react";
+import {withHistory} from "slate-history";
+import {Editable, Slate, useFocused, useSelected, useSlate, useSlateStatic, withReact} from 'slate-react';
 // import {Button, Icon, Toolbar} from './components';
-import { Button, Toolbar } from "./components";
+import {Button, Toolbar} from "./components";
 
 const HOTKEYS = {
   "mod+b": "bold",
@@ -33,6 +39,7 @@ const HOTKEYS = {
   "mod+u": "underline",
   "mod+`": "code",
 };
+
 const initialValue = [
   {
     type: "paragraph",
@@ -44,6 +51,7 @@ const initialValue = [
       { text: " better than a " },
       { text: "<textarea>", code: true },
       { text: "!" },
+      { text: 'In addition to nodes that contain editable text, you can also create other types of nodes, like images or videos.' },
     ],
   },
   {
@@ -66,7 +74,21 @@ const initialValue = [
     type: "paragraph",
     children: [{ text: "Try it out for yourself!" }],
   },
+  {
+    type: 'image',
+    url: 'https://source.unsplash.com/kFrdX5IeQzI',
+    children: [{ text: '' }],
+  },
+  {
+    type: 'paragraph',
+    children: [
+        {
+            text: 'This example shows images in action. It features two ways to add images. You can either add an image via the toolbar icon above or if you want in on a little secret, copy an image URL to your clipboard and paste it anywhere in the editor!',
+        },
+    ],
+  },
 ];
+
 const LIST_TYPES = ["numbered-list", "bulleted-list"];
 
 const isMarkActive = (editor, format) => {
@@ -91,11 +113,52 @@ const isBlockActive = (editor, format) => {
   return !!match;
 };
 
+const insertImage = (editor, url) => {
+  const text = { text: '' };
+  const image = { type: 'image', url, children: [text] };
+  Transforms.insertNodes(editor, image);
+};
+
+const isImageUrl = (url) => {
+  if (!url) return false;
+  if (!isUrl(url)) return false;
+  const ext = new URL(url).pathname.split('.').pop();
+  return imageExtensions.includes(ext);
+};
+
+const withImages = (editor) => {
+  const { insertData, isVoid } = editor;
+  editor.isVoid = (element) => (element.type === 'image' ? true : isVoid(element));
+  editor.insertData = (data) => {
+      const text = data.getData('text/plain');
+      const { files } = data;
+      if (files && files.length > 0) {
+          for (const file of files) {
+              const reader = new FileReader();
+              const [mime] = file.type.split('/');
+              if (mime === 'image') {
+                  reader.addEventListener('load', () => {
+                      const url = reader.result;
+                      insertImage(editor, url);
+                  });
+                  reader.readAsDataURL(file);
+              }
+          }
+      } else if (isImageUrl(text)) {
+          insertImage(editor, text);
+      } else {
+          insertData(data);
+      }
+  };
+  return editor;
+};
+
 const RichTextExample = () => {
   const [value, setValue] = useState(initialValue);
   const renderElement = useCallback((props) => <Element {...props} />, []);
   const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
-  const editor = useMemo(() => withHistory(withReact(createEditor())), []);
+  // const editor = useMemo(() => withHistory(withReact(createEditor())), []);
+  const editor = useMemo(() => withImages(withHistory(withReact(createEditor()))), []);
 
   return (
     <Slate editor={editor} value={value} onChange={(v) => setValue(v)}>
@@ -109,11 +172,12 @@ const RichTextExample = () => {
         <BlockButton format="block-quote" icon={<MdFormatQuote />} />
         <BlockButton format="numbered-list" icon={<MdFormatListNumbered />} />
         <BlockButton format="bulleted-list" icon={<MdFormatListBulleted />} />
+        <InsertImageButton />
       </Toolbar>
       <Editable
         renderElement={renderElement}
         renderLeaf={renderLeaf}
-        placeholder="Enter some rich text…"
+        placeholder="Enter some text…"
         spellCheck
         autoFocus
         onKeyDown={(event) => {
@@ -129,6 +193,7 @@ const RichTextExample = () => {
     </Slate>
   );
 };
+
 const toggleBlock = (editor, format) => {
   const isActive = isBlockActive(editor, format);
   const isList = LIST_TYPES.includes(format);
@@ -149,7 +214,9 @@ const toggleBlock = (editor, format) => {
   }
 };
 
-const Element = ({ attributes, children, element }) => {
+const Element = (props) => {
+  const { attributes, children, element } = props;
+  
   switch (element.type) {
     case "block-quote":
       return <blockquote {...attributes}>{children}</blockquote>;
@@ -163,10 +230,34 @@ const Element = ({ attributes, children, element }) => {
       return <li {...attributes}>{children}</li>;
     case "numbered-list":
       return <ol {...attributes}>{children}</ol>;
+    case 'image':
+      return <Image {...props} />;
     default:
       return <p {...attributes}>{children}</p>;
   }
 };
+
+const Image = ({ attributes, children, element }) => {
+  const selected = useSelected();
+  const focused = useFocused();
+  return (
+      <div {...attributes}>
+          <div contentEditable={false}>
+              <img
+                  src={element.url}
+                  className={css`
+                      display: block;
+                      max-width: 100%;
+                      max-height: 20em;
+                      box-shadow: ${selected && focused ? '0 0 0 3px #B4D5FF' : 'none'};
+                  `}
+              />
+          </div>
+          {children}
+      </div>
+  );
+};
+
 const Leaf = ({ attributes, children, leaf }) => {
   if (leaf.bold) {
     children = <strong>{children}</strong>;
@@ -211,6 +302,28 @@ const MarkButton = ({ format, icon }) => {
       {/* <Icon>{icon}</Icon> */}
       {icon}
     </Button>
+  );
+};
+
+const InsertImageButton = () => {
+  const editor = useSlateStatic();
+  return (
+      <Button
+          onMouseDown={(event) => {
+              event.preventDefault();
+              // eslint-disable-next-line no-alert
+              const url = window.prompt('Enter the URL of the image:');
+              if (url && !isImageUrl(url)) {
+                  // eslint-disable-next-line no-alert
+                  alert('URL is not an image');
+                  return;
+              }
+              insertImage(editor, url);
+          }}
+      >
+          {/* <Icon>image</Icon> */}
+          <MdImage />
+      </Button>
   );
 };
 
