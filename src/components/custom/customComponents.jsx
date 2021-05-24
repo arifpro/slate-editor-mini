@@ -2,7 +2,6 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/jsx-props-no-spreading */
-// import { css, cx } from 'emotion';
 import { css, cx } from '@emotion/css';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -20,6 +19,7 @@ export const Button = React.forwardRef(({ className, active, reversed, ...props 
         )}
     />
 ));
+
 export const EditorValue = React.forwardRef(({ className, value, ...props }, ref) => {
     const textLines = value.document.nodes
         .map((node) => node.text)
@@ -63,6 +63,7 @@ export const EditorValue = React.forwardRef(({ className, value, ...props }, ref
         </div>
     );
 });
+
 export const Icon = React.forwardRef(({ className, ...props }, ref) => (
     <span
         {...props}
@@ -77,6 +78,7 @@ export const Icon = React.forwardRef(({ className, ...props }, ref) => (
         )}
     />
 ));
+
 export const Instruction = React.forwardRef(({ className, ...props }, ref) => (
     <div
         {...props}
@@ -93,6 +95,7 @@ export const Instruction = React.forwardRef(({ className, ...props }, ref) => (
         )}
     />
 ));
+
 export const Menu = React.forwardRef(({ className, ...props }, ref) => (
     <div
         {...props}
@@ -111,8 +114,10 @@ export const Menu = React.forwardRef(({ className, ...props }, ref) => (
         )}
     />
 ));
+
 export const Portal = ({ children }) =>
     typeof document === 'object' ? ReactDOM.createPortal(children, document.body) : null;
+
 export const Toolbar = React.forwardRef(({ className, ...props }, ref) => (
     <Menu
         {...props}
