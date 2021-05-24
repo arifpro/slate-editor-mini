@@ -1,3 +1,4 @@
+/* eslint-disable no-multi-assign */
 /* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable no-param-reassign */
@@ -11,11 +12,13 @@ import React, {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState
 } from "react";
 import {
   MdCloudUpload, MdCode,
   MdFormatBold,
+  MdFormatIndentIncrease,
   MdFormatItalic,
   MdFormatListBulleted,
   MdFormatListNumbered,
@@ -120,13 +123,15 @@ const withImages = (editor) => {
 
 const CustomSlateEditor = () => {
   const [value, setValue] = useState(initialValue);
+  const textArea = useRef();
   const renderElement = useCallback((props) => <Element {...props} />, []);
   const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
   // const editor = useMemo(() => withHistory(withReact(createEditor())), []);
   const editor = useMemo(() => withImages(withHistory(withReact(createEditor()))), []);
+  const [selectedText, setSelectedText] = useState('')
 
   return (
-    <Slate editor={editor} value={value} onChange={(v) => setValue(v)}>
+    <Slate editor={editor} ref={textArea} value={value} onChange={(v) => setValue(v)}>
       <Toolbar style={{padding: '1rem', margin: 0}}>
         <MarkButton format="bold" icon={<MdFormatBold />} />
         <MarkButton format="italic" icon={<MdFormatItalic />} />
@@ -139,21 +144,42 @@ const CustomSlateEditor = () => {
         <BlockButton format="bulleted-list" icon={<MdFormatListBulleted />} />
         <InsertImageButton />
         <UploadImageButton />
-        {/* <TextArea /> */}
+        <MarkTab format="indent" icon={<MdFormatIndentIncrease />} setSelectedText={setSelectedText} />
       </Toolbar>
       <Editable
         style={{padding: '0.5rem 1rem'}}
         renderElement={renderElement}
         renderLeaf={renderLeaf}
+        // ref={textArea}
+        // value={value}
+        // onChange={(e) => setValue(e.target.value)}
         placeholder="Enter some text…"
         spellCheck
         autoFocus
-        onKeyDown={(event) => {
+        onKeyDown={(e) => {
           for (const hotkey in HOTKEYS) {
-            if (isHotkey(hotkey, event)) {
-              event.preventDefault();
+            if (isHotkey(hotkey, e)) {
+              e.preventDefault();
               const mark = HOTKEYS[hotkey];
               toggleMark(editor, mark);
+            }
+          }
+
+          // shift+tab
+          if (e.shiftKey) {
+            if (e.shiftKey && e.key === 'Tab') {
+              e.preventDefault();
+              isMarkActive(editor, "indent")
+              toggleMark(editor, "indent");
+            }
+          }
+
+          // tab
+          if (e.key === 'Tab') {
+            if (!e.shiftKey && e.key === 'Tab') {
+              e.preventDefault();
+              isMarkActive(editor, "indent")
+              toggleMark(editor, "indent");
             }
           }
         }}
@@ -239,8 +265,12 @@ const Leaf = ({ attributes, children, leaf }) => {
   if (leaf.underline) {
     children = <u>{children}</u>;
   }
+  if (leaf.indent) {
+    children = <p style={{display: 'inline-block', margin: 0}}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {children}</p>;
+  }
   return <span {...attributes}>{children}</span>;
 };
+
 const BlockButton = ({ format, icon }) => {
   const editor = useSlate();
   return (
@@ -258,6 +288,23 @@ const BlockButton = ({ format, icon }) => {
 
 const MarkButton = ({ format, icon }) => {
   const editor = useSlate();
+  // console.log(editor)
+  return (
+    <Button
+      active={isMarkActive(editor, format)}
+      onMouseDown={(event) => {
+        event.preventDefault();
+        toggleMark(editor, format);
+      }}
+    >
+      {icon}
+    </Button>
+  );
+};
+
+const MarkTab = ({ format, icon, setSelectedText }) => {
+  const editor = useSlate();
+  setSelectedText(editor)
   return (
     <Button
       active={isMarkActive(editor, format)}
@@ -343,7 +390,5 @@ const UploadImageButton = () => {
     </div>
   );
 };
-
-
 
 export default CustomSlateEditor;

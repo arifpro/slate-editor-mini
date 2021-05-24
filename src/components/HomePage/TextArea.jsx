@@ -1,3 +1,4 @@
+/* eslint-disable no-multi-assign */
 import { useRef, useState } from 'react';
 
 const TextArea = () => {
@@ -47,11 +48,9 @@ const TextArea = () => {
                         if (textArea.current) {
                             textArea.current.value = returnValue;
                             if (splitValue[row].startsWith(' ')) {
-                                // eslint-disable-next-line no-multi-assign
                                 textArea.current.selectionStart = textArea.current.selectionEnd =
                                     selectionStart - 2;
                             } else {
-                                // eslint-disable-next-line no-multi-assign
                                 textArea.current.selectionStart = textArea.current.selectionEnd =
                                     selectionStart;
                             }
@@ -72,7 +71,6 @@ const TextArea = () => {
                         setValue(newValue);
                         if (textArea.current) {
                             textArea.current.value = newValue;
-                            // eslint-disable-next-line no-multi-assign
                             textArea.current.selectionStart = textArea.current.selectionEnd =
                                 selectionStart + 2;
                         }
@@ -81,7 +79,6 @@ const TextArea = () => {
             }}
             onChange={(e) => setValue(e.target.value)}
             value={value}
-            // value={value.map(v => )}
         />
     );
 };
