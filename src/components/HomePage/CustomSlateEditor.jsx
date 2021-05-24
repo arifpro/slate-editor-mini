@@ -1,5 +1,4 @@
-// import ImagesExample from './images';
-// import RichTextExample from './richtext';
+/* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-nested-ternary */
@@ -7,14 +6,13 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable prettier/prettier */
 import {css} from "@emotion/css";
-import imageExtensions from "image-extensions";
 import isHotkey from "is-hotkey";
-import isUrl from "is-url";
 import React, {
-  useCallback, 
-  useEffect, 
-  useMemo, 
-  useState} from "react";
+  useCallback,
+  useEffect,
+  useMemo,
+  useState
+} from "react";
 import {
   MdCloudUpload, MdCode,
   MdFormatBold,
@@ -43,65 +41,17 @@ import {
   useSlateStatic,
   withReact
 } from "slate-react";
+import {HOTKEYS, initialValue} from "../../data";
 import {Button, Toolbar} from "../custom";
+// import TextArea from "./TextArea";
+import {isBlockActive, isImageUrl} from "./validation";
 
-const HOTKEYS = {
-  "mod+b": "bold",
-  "mod+i": "italic",
-  "mod+u": "underline",
-  "mod+`": "code",
-};
-
-const initialValue = [
-  {
-    type: "paragraph",
-    children: [
-      { text: "This is editable " },
-      { text: "rich", bold: true },
-      { text: " text, " },
-      { text: "much", italic: true },
-      { text: " better than a " },
-      { text: "<textarea>", code: true },
-      { text: "!" },
-      {
-        text: "In addition to nodes that contain editable text, you can also create other types of nodes, like images or videos.",
-      },
-    ],
-  },
-  {
-    type: "paragraph",
-    children: [
-      {
-        text: "Since it's rich text, you can do things like turn a selection of text ",
-      },
-      { text: "bold", bold: true },
-      {
-        text: ", or add a semantically rendered block quote in the middle of the page, like this:",
-      },
-    ],
-  },
-  {
-    type: "block-quote",
-    children: [{ text: "A wise quote." }],
-  },
-  {
-    type: "paragraph",
-    children: [{ text: "Try it out for yourself!" }],
-  },
-  {
-    type: "image",
-    url: "https://source.unsplash.com/kFrdX5IeQzI",
-    children: [{ text: "" }],
-  },
-  {
-    type: "paragraph",
-    children: [
-      {
-        text: "This example shows images in action. It features two ways to add images. You can either add an image via the toolbar icon above or if you want in on a little secret, copy an image URL to your clipboard and paste it anywhere in the editor!",
-      },
-    ],
-  },
-];
+// const HOTKEYS = {
+//   "mod+b": "bold",
+//   "mod+i": "italic",
+//   "mod+u": "underline",
+//   "mod+`": "code",
+// };
 
 const LIST_TYPES = ["numbered-list", "bulleted-list"];
 
@@ -119,13 +69,13 @@ const toggleMark = (editor, format) => {
   }
 };
 
-const isBlockActive = (editor, format) => {
-  const [match] = Editor.nodes(editor, {
-    match: (n) =>
-      !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === format,
-  });
-  return !!match;
-};
+// const isBlockActive = (editor, format) => {
+//   const [match] = Editor.nodes(editor, {
+//     match: (n) =>
+//       !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === format,
+//   });
+//   return !!match;
+// };
 
 const insertImage = (editor, url) => {
   const text = { text: "" };
@@ -133,12 +83,12 @@ const insertImage = (editor, url) => {
   Transforms.insertNodes(editor, image);
 };
 
-const isImageUrl = (url) => {
-  if (!url) return false;
-  if (!isUrl(url)) return false;
-  const ext = new URL(url).pathname.split(".").pop();
-  return imageExtensions.includes(ext);
-};
+// const isImageUrl = (url) => {
+//   if (!url) return false;
+//   if (!isUrl(url)) return false;
+//   const ext = new URL(url).pathname.split(".").pop();
+//   return imageExtensions.includes(ext);
+// };
 
 const withImages = (editor) => {
   const { insertData, isVoid } = editor;
@@ -173,10 +123,7 @@ const CustomSlateEditor = () => {
   const renderElement = useCallback((props) => <Element {...props} />, []);
   const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
   // const editor = useMemo(() => withHistory(withReact(createEditor())), []);
-  const editor = useMemo(
-    () => withImages(withHistory(withReact(createEditor()))),
-    []
-  );
+  const editor = useMemo(() => withImages(withHistory(withReact(createEditor()))), []);
 
   return (
     <Slate editor={editor} value={value} onChange={(v) => setValue(v)}>
@@ -192,6 +139,7 @@ const CustomSlateEditor = () => {
         <BlockButton format="bulleted-list" icon={<MdFormatListBulleted />} />
         <InsertImageButton />
         <UploadImageButton />
+        {/* <TextArea /> */}
       </Toolbar>
       <Editable
         style={{padding: '0.5rem 1rem'}}
@@ -303,7 +251,6 @@ const BlockButton = ({ format, icon }) => {
         toggleBlock(editor, format);
       }}
     >
-      {/* <Icon>{icon}</Icon> */}
       {icon}
     </Button>
   );
@@ -319,7 +266,6 @@ const MarkButton = ({ format, icon }) => {
         toggleMark(editor, format);
       }}
     >
-      {/* <Icon>{icon}</Icon> */}
       {icon}
     </Button>
   );
@@ -357,12 +303,8 @@ const UploadImageButton = () => {
     console.log(files[0])
     const reader = new FileReader();
     reader.readAsDataURL(files[0]);
-    reader.onload = () => {
-      setFile(reader.result)
-    };
-    reader.onerror = function (error) {
-      console.log('Error: ', error);
-    };
+    reader.onload = () => setFile(reader.result);
+    reader.onerror = (error) => console.log('Error: ', error);
   };
   
   useEffect(() => {
@@ -395,6 +337,7 @@ const UploadImageButton = () => {
          top: 0,
          left: 0,
          opacity: 0, 
+         width: '16px',
         }}
       />
     </div>
