@@ -10,9 +10,13 @@ import {css} from "@emotion/css";
 import imageExtensions from "image-extensions";
 import isHotkey from "is-hotkey";
 import isUrl from "is-url";
-import React, {useCallback, useMemo, useState} from "react";
+import React, {
+  useCallback, 
+  useEffect, 
+  useMemo, 
+  useState} from "react";
 import {
-  MdCode,
+  MdCloudUpload, MdCode,
   MdFormatBold,
   MdFormatItalic,
   MdFormatListBulleted,
@@ -39,7 +43,7 @@ import {
   useSlateStatic,
   withReact
 } from "slate-react";
-import { Toolbar, Button } from "../custom";
+import {Button, Toolbar} from "../custom";
 
 const HOTKEYS = {
   "mod+b": "bold",
@@ -187,9 +191,10 @@ const CustomSlateEditor = () => {
         <BlockButton format="numbered-list" icon={<MdFormatListNumbered />} />
         <BlockButton format="bulleted-list" icon={<MdFormatListBulleted />} />
         <InsertImageButton />
+        <UploadImageButton />
       </Toolbar>
       <Editable
-      style={{padding: '0.5rem 1rem'}}
+        style={{padding: '0.5rem 1rem'}}
         renderElement={renderElement}
         renderLeaf={renderLeaf}
         placeholder="Enter some text…"
@@ -333,13 +338,69 @@ const InsertImageButton = () => {
           alert("URL is not an image");
           return;
         }
-        insertImage(editor, url);
+        if (url) {
+          insertImage(editor, url);
+        }
       }}
     >
-      {/* <Icon>image</Icon> */}
       <MdImage />
     </Button>
   );
 };
+
+// eslint-disable-next-line arrow-body-style
+const UploadImageButton = () => {
+  const editor = useSlateStatic();
+  const [file, setFile] = useState();
+
+  const handleChange = (files) => {
+    console.log(files[0])
+    const reader = new FileReader();
+    reader.readAsDataURL(files[0]);
+    reader.onload = () => {
+      setFile(reader.result)
+    };
+    reader.onerror = function (error) {
+      console.log('Error: ', error);
+    };
+  };
+  
+  useEffect(() => {
+    if (file) {
+      insertImage(editor, file);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [file])
+
+  return (
+    <div className="choose_file" style={{
+      position:"relative",
+      display:"inline-block",
+    }}>
+      <span>
+        <Button>
+          <MdCloudUpload />
+        </Button>
+      </span>
+      <input
+        type="file"
+        name="imgUpload"
+        accept='.png'
+        // onChange={getBase64}
+        // onChange={(e) => setFile(e.target.files[0]) }
+        onChange={(e) => handleChange(e.target.files) }
+        style={{
+         '-webkit-appearance': 'none',
+         position: 'absolute',
+         top: 0,
+         left: 0,
+         opacity: 0, 
+        }}
+      />
+    </div>
+  );
+};
+
+
 
 export default CustomSlateEditor;
