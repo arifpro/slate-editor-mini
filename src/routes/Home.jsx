@@ -1,15 +1,22 @@
-import Info from '../components/HomePage/Info';
+import CustomSlateEditor from '../components/HomePage/CustomSlateEditor';
+// import TextArea from '../components/HomePage/TextArea';
+// import Info from '../components/HomePage/Info';
 import Layout from '../components/Layout';
 
-const Home = () => {
-    const name = 'Home';
+const Home = () => (
+    <Layout title="Home">
+        {/* <Info /> */}
+        <div style={{ margin: '5rem 0', display: 'flex', justifyContent: 'center' }}>
+            {/* <div style={{ width: '600px', background: 'white', padding: '1rem' }}> */}
+            <div style={{ width: '600px', background: 'white' }}>
+                <CustomSlateEditor />
+            </div>
 
-    return (
-        <Layout title="Home">
-            <h1>{name} page</h1>
-            <Info />
-        </Layout>
-    );
-};
+            {/* <div style={{ width: '600px', background: 'white' }}>
+                <TextArea />
+            </div> */}
+        </div>
+    </Layout>
+);
 
 export default Home;
