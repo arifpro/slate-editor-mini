@@ -57,4 +57,6 @@ const HOTKEYS = {
     'mod+t': 'indent',
 };
 
-export { initialValue, HOTKEYS };
+const LIST_TYPES = ['numbered-list', 'bulleted-list'];
+
+export { initialValue, HOTKEYS, LIST_TYPES };

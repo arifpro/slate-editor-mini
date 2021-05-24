@@ -1,5 +1,5 @@
 import CustomSlateEditor from '../components/HomePage/CustomSlateEditor';
-import TextArea from '../components/HomePage/TextArea';
+// import TextArea from '../components/HomePage/TextArea';
 // import Info from '../components/HomePage/Info';
 import Layout from '../components/Layout';
 
@@ -12,9 +12,9 @@ const Home = () => (
                 <CustomSlateEditor />
             </div>
 
-            <div style={{ width: '600px', background: 'white' }}>
+            {/* <div style={{ width: '600px', background: 'white' }}>
                 <TextArea />
-            </div>
+            </div> */}
         </div>
     </Layout>
 );
