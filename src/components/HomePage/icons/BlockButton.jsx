@@ -1,5 +1,5 @@
 import { useSlate } from 'slate-react';
-import { Button } from '../../custom';
+import { Button } from '../custom';
 import { toggleBlock } from '../helper';
 import { isBlockActive } from '../validation';
 

@@ -29,8 +29,8 @@ import {createEditor} from "slate";
 import {withHistory} from "slate-history";
 import {Editable, Slate, withReact} from "slate-react";
 import {HOTKEYS, initialValue} from "../../data";
-import {Element, Leaf, Toolbar} from "../custom";
-import {BlockButton, InsertImageButton, MarkButton, MarkTab, UploadImageButton} from "./ButtonIcons";
+import {Element, Leaf, Toolbar} from "./custom";
+import {BlockButton, InsertImageButton, MarkButton, MarkTab, UploadImageButton} from "./icons";
 import {toggleMark, withImages} from "./helper";
 import {isMarkActive} from "./validation";
 
