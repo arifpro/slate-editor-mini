@@ -1,15 +1,11 @@
 /* eslint-disable no-alert */
 import { MdSave } from 'react-icons/md';
-import BlockCount from '../BlockCount';
+import { RiSave2Line } from 'react-icons/ri';
 import { Button } from '../custom';
 
-const plugin = BlockCount({ blockLimit: null });
-
-const SaveButton = ({ value }) => {
+const SaveButton = ({ value, isSaveBtnOn }) => {
     const onSave = () => {
-        console.log('Limit:', plugin.blockLimit);
-
-        if (plugin.checkLimitCrossed()) {
+        if (!isSaveBtnOn) {
             return alert("Can't save, limit crossed for top level element.");
         }
 
@@ -19,8 +15,13 @@ const SaveButton = ({ value }) => {
     };
 
     return (
-        <Button style={{ color: '#28b728' }} title="Save" primary={false} onClick={() => onSave()}>
-            <MdSave />
+        <Button
+            style={{ color: isSaveBtnOn ? '#28b728' : 'lightslategray' }}
+            title="Save"
+            primary={false}
+            onClick={() => onSave()}
+        >
+            {isSaveBtnOn ? <MdSave /> : <RiSave2Line />}
         </Button>
     );
 };

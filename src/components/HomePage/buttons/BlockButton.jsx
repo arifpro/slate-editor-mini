@@ -5,6 +5,7 @@ import { isBlockActive } from '../validation';
 
 const BlockButton = ({ format, icon }) => {
     const editor = useSlate();
+
     return (
         <Button
             active={isBlockActive(editor, format)}

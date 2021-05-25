@@ -40,7 +40,7 @@ const UploadImageButton = () => {
             <input
                 type="file"
                 name="imgUpload"
-                accept=".png"
+                accept="image/*"
                 onChange={(e) => handleChange(e.target.files)}
                 style={{
                     '-webkit-appearance': 'none',
