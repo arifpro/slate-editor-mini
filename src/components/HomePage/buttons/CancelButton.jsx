@@ -7,7 +7,7 @@ const CancelButton = ({ setValue }) => {
     const onCancel = () => {
         setValue(getExistingValue());
         setTimeout(() => {
-            alert('restores to the old saved content');
+            alert('restored to the old saved content');
         }, 1);
     };
 
