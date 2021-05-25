@@ -1,34 +1,54 @@
-const BlockCount = (options) => {
-    const blockLimit = options.blockLimit || 'unlimited';
+/* eslint-disable no-shadow */
+/* eslint-disable no-unused-vars */
+/* eslint-disable array-callback-return */
+import { useEffect } from 'react';
+import { Node } from 'slate';
+import { useSlate } from 'slate-react';
+
+const BlockCount = ({ blockLimitation, setIsSaveBtnOn }) => {
+    const editor = useSlate();
+    const blockLimit = blockLimitation || 'unlimited';
     let blockCount = 0;
 
-    return {
-        blockLimit,
-        blockCount,
-        checkLimitCrossed() {
-            return blockLimit < blockCount;
-        },
-        renderEditor({ value }, editor, next) {
-            const children = next();
-            console.log('Blocks length', value.document.getBlocks());
-            blockCount = value.document.getBlocks().size;
-            return (
-                <div>
-                    <div>{children}</div>
-                    <div
-                        style={{
-                            marginTop: '10px',
-                            padding: '12px',
-                            backgroundColor: '#ebebeb',
-                            display: 'block',
-                        }}
-                    >
-                        Top level Blocks: {blockCount} <br /> Limit: {blockLimit}
-                    </div>
-                </div>
-            );
-        },
-    };
+    if (editor.children.length === 1) {
+        if (editor.children[0].children[0].text === '') {
+            blockCount = 0;
+        } else {
+            blockCount = 1;
+        }
+    } else if (editor.children.length > 1) {
+        blockCount = editor.children.length;
+    }
+
+    useEffect(() => {
+        if (blockLimit === 'unlimited') {
+            setIsSaveBtnOn(true);
+        } else if (blockLimit <= blockCount) {
+            setIsSaveBtnOn(false);
+        } else {
+            setIsSaveBtnOn(true);
+        }
+    }, [blockCount, blockLimit, setIsSaveBtnOn]);
+
+    return (
+        <div
+            style={{
+                background: '#cccccc',
+                margin: '0.3rem',
+                borderRadius: '25px',
+                display: 'flex',
+                justifyContent: 'space-evenly',
+                fontFamily: 'monospace',
+            }}
+        >
+            <p>
+                <strong>Top level Blocks:</strong> {blockCount}
+            </p>
+            <p>
+                <strong>Limit:</strong> {blockLimit}
+            </p>
+        </div>
+    );
 };
 
 export default BlockCount;

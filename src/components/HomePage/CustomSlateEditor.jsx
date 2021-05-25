@@ -18,8 +18,7 @@ import { createEditor } from 'slate';
 import { withHistory } from 'slate-history';
 import { Editable, Slate, withReact } from 'slate-react';
 import { HOTKEYS, initialValue } from '../../data';
-import { Element, Leaf, Toolbar } from './custom';
-import { getExistingValue, toggleMark, withImages } from './helper';
+import BlockCount from './BlockCount';
 import {
     BlockButton,
     CancelButton,
@@ -29,6 +28,8 @@ import {
     SaveButton,
     UploadImageButton,
 } from './buttons';
+import { Element, Leaf, Toolbar } from './custom';
+import { getExistingValue, toggleMark, withImages } from './helper';
 import { isMarkActive } from './validation';
 
 const CustomSlateEditor = () => {
@@ -37,7 +38,8 @@ const CustomSlateEditor = () => {
     const renderElement = useCallback((props) => <Element {...props} />, []);
     const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
     const editor = useMemo(() => withImages(withHistory(withReact(createEditor()))), []);
-    const [selectedText, setSelectedText] = useState('');
+    const [selectedText, setSelectedText] = useState({});
+    const [isSaveBtnOn, setIsSaveBtnOn] = useState(true);
 
     return (
         <Slate editor={editor} ref={textArea} value={value} onChange={(v) => setValue(v)}>
@@ -58,7 +60,7 @@ const CustomSlateEditor = () => {
                     icon={<MdFormatIndentIncrease />}
                     setSelectedText={setSelectedText}
                 />
-                <SaveButton value={value} />
+                <SaveButton value={value} isSaveBtnOn={isSaveBtnOn} />
                 <CancelButton setValue={setValue} />
             </Toolbar>
             <Editable
@@ -81,8 +83,11 @@ const CustomSlateEditor = () => {
                     if (e.shiftKey) {
                         if (e.shiftKey && e.key === 'Tab') {
                             e.preventDefault();
-                            isMarkActive(selectedText, 'indent');
-                            toggleMark(selectedText, 'indent');
+                            if (selectedText?.format === 'indent') {
+                                isMarkActive(editor, 'indent');
+                                toggleMark(editor, 'indent');
+                                console.log('shift+tab => ', selectedText);
+                            }
                         }
                     }
 
@@ -90,12 +95,16 @@ const CustomSlateEditor = () => {
                     if (e.key === 'Tab') {
                         if (!e.shiftKey && e.key === 'Tab') {
                             e.preventDefault();
-                            isMarkActive(selectedText, 'indent');
-                            toggleMark(selectedText, 'indent');
+                            if (selectedText?.format === 'indent') {
+                                isMarkActive(editor, 'indent');
+                                toggleMark(editor, 'indent');
+                                console.log('tab => ', selectedText);
+                            }
                         }
                     }
                 }}
             />
+            <BlockCount blockLimitation={10} setIsSaveBtnOn={setIsSaveBtnOn} />
         </Slate>
     );
 };
