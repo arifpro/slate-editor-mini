@@ -1,17 +1,18 @@
-import AboutDetails from '../components/AboutPage/AboutDetails';
-import Header from '../components/AboutPage/Header';
 import Layout from '../components/Layout';
 
-const About = () => {
-    const name = 'About';
-
-    return (
-        <Layout title="About">
-            <h1>{name} page</h1>
-            <Header />
-            <AboutDetails />
-        </Layout>
-    );
-};
+const About = () => (
+    <Layout title="About">
+        <section
+            style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '100vh',
+            }}
+        >
+            <h2 style={{ fontFamily: 'monospace', color: '#3c444c' }}>about page</h2>
+        </section>
+    </Layout>
+);
 
 export default About;

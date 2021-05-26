@@ -1,7 +1,7 @@
 /* eslint-disable no-alert */
 import { MdSave } from 'react-icons/md';
 import { RiSave2Line } from 'react-icons/ri';
-import { Button } from '../custom';
+import { Button } from '../plugins';
 
 const SaveButton = ({ value, isSaveBtnOn }) => {
     const onSave = () => {
