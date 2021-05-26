@@ -35,6 +35,7 @@ const BlockCount = ({ blockLimitation, setIsSaveBtnOn }) => {
             style={{
                 background: '#cccccc',
                 margin: '0.3rem',
+                padding: '0.5rem 0',
                 borderRadius: '25px',
                 display: 'flex',
                 justifyContent: 'space-evenly',

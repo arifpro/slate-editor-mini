@@ -8,6 +8,7 @@ const BlockButton = ({ format, icon }) => {
 
     return (
         <Button
+            title={format}
             active={isBlockActive(editor, format)}
             onMouseDown={(event) => {
                 event.preventDefault();
