@@ -1,6 +1,6 @@
 import { Editor, Transforms, Range } from 'slate';
 
-const defaultMax = 5;
+const defaultMax = 2;
 
 const indentItem = (editor, maxDepth = defaultMax) => {
     const { selection } = editor;

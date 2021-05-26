@@ -5,6 +5,7 @@ const liftNodes = (editor) => {
     const [listMatch] = Editor.nodes(editor, {
         match: (n) => n.type === 'bulleted-list' || n.type === 'numbered-list',
     });
+    console.log(listMatch);
     // verify there is a list to lift the nodes
     if (listMatch) {
         // 'lift' the list-item to the next parent

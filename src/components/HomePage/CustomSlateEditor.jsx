@@ -93,22 +93,14 @@ const CustomSlateEditor = () => {
                     }
 
                     if (isHotkey('shift+tab', e)) {
-                        // attempt to un-indent on shift+tab within list
+                        // un-indent list
                         e.preventDefault();
                         unindentItem(editor);
                     } else if (isHotkey('tab', e)) {
-                        // attempt to indent on tab within list
+                        // indent list
                         e.preventDefault();
                         indentItem(editor);
                     }
-
-                    // if (e.key === 'Tab') {
-                    //     if (e.shiftKey) {
-                    //         console.log('shift+tab');
-                    //     } else {
-                    //         console.log('tab');
-                    //     }
-                    // }
                 }}
             />
             <BlockCount blockLimitation={null} setIsSaveBtnOn={setIsSaveBtnOn} />

@@ -10,7 +10,6 @@ const unindentItem = (editor) => {
             match: (n) => n.type === 'list-item',
         });
 
-        // check that there was a match
         if (match) {
             // 'lift' the list-item to the next parent
             liftNodes(editor);
