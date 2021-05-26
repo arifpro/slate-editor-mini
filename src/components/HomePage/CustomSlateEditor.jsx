@@ -29,16 +29,27 @@ import {
     SaveButton,
     UploadImageButton,
 } from './buttons';
-import { Element, Leaf, Toolbar } from './custom';
-import { getExistingValue, toggleMark, withImages } from './helper';
-import { isMarkActive } from './validation';
+import {
+    getExistingValue,
+    indentItem,
+    toggleMark,
+    unindentItem,
+    withImages,
+    withLists,
+    withMarkdown,
+} from './helper';
+import { Element, Leaf, Toolbar } from './plugins';
 
 const CustomSlateEditor = () => {
     const [value, setValue] = useState(getExistingValue() || initialValue);
     const textArea = useRef();
     const renderElement = useCallback((props) => <Element {...props} />, []);
     const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
-    const editor = useMemo(() => withImages(withHistory(withReact(createEditor()))), []);
+    // const editor = useMemo(() => withImages(withHistory(withReact(createEditor()))), []);
+    const editor = useMemo(
+        () => withLists(withMarkdown(withImages(withHistory(withReact(createEditor()))))),
+        []
+    );
     const [selectedText, setSelectedText] = useState({});
     const [isSaveBtnOn, setIsSaveBtnOn] = useState(true);
 
@@ -81,27 +92,21 @@ const CustomSlateEditor = () => {
                         }
                     }
 
-                    // shift+tab
-                    // if (e.shiftKey) {
-                    //     if (e.shiftKey && e.key === 'Tab') {
-                    //         e.preventDefault();
-                    //         if (selectedText?.format === 'indent') {
-                    //             isMarkActive(editor, 'indent');
-                    //             toggleMark(editor, 'indent');
-                    //             console.log('shift+tab => ', selectedText);
-                    //         }
-                    //     }
-                    // }
+                    if (isHotkey('shift+tab', e)) {
+                        // attempt to un-indent on shift+tab within list
+                        e.preventDefault();
+                        unindentItem(editor);
+                    } else if (isHotkey('tab', e)) {
+                        // attempt to indent on tab within list
+                        e.preventDefault();
+                        indentItem(editor);
+                    }
 
-                    // tab
                     // if (e.key === 'Tab') {
-                    //     if (!e.shiftKey && e.key === 'Tab') {
-                    //         e.preventDefault();
-                    //         if (selectedText?.format === 'indent') {
-                    //             isMarkActive(editor, 'indent');
-                    //             toggleMark(editor, 'indent');
-                    //             console.log('tab => ', selectedText);
-                    //         }
+                    //     if (e.shiftKey) {
+                    //         console.log('shift+tab');
+                    //     } else {
+                    //         console.log('tab');
                     //     }
                     // }
                 }}

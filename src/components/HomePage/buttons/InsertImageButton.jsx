@@ -1,6 +1,6 @@
 import { MdImage } from 'react-icons/md';
 import { useSlateStatic } from 'slate-react';
-import { Button } from '../custom';
+import { Button } from '../plugins';
 import { insertImage } from '../helper';
 import { isImageUrl } from '../validation';
 

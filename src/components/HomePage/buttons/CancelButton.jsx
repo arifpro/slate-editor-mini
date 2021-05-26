@@ -1,6 +1,6 @@
 /* eslint-disable no-alert */
 import { MdCancel } from 'react-icons/md';
-import { Button } from '../custom';
+import { Button } from '../plugins';
 import { getExistingValue } from '../helper';
 
 const CancelButton = ({ setValue }) => {

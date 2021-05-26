@@ -1,5 +1,13 @@
-* {
-  box-sizing: border-box;
+*,
+*:before,
+*:after {
+  margin: 0;
+  padding: 0;
+
+  -webkit-box-sizing: border-box !important;
+  -moz-box-sizing: border-box !important;
+  -ms-box-sizing: border-box !important;
+  box-sizing: border-box !important;
 }
 
 body {
@@ -35,14 +43,23 @@ body {
   margin: 0;
 }
 
-p {
-  margin: 0;
-}
+// p {
+//   margin: 0;
+// }
 
 pre {
   padding: 10px;
   background-color: #eee;
   white-space: pre-wrap;
+}
+
+ul,
+ol {
+  margin: 10px 30px;
+}
+
+li {
+  margin: 4px 0px;
 }
 
 :not(pre) > code {
@@ -97,4 +114,28 @@ input:focus {
 
 [data-slate-editor] > * + * {
   margin-top: 1em;
+}
+
+.editor-ol {
+  list-style-type: decimal;
+}
+
+.editor-ol > .editor-ol {
+  list-style-type: lower-alpha;
+}
+
+.editor-ol > .editor-ol > .editor-ol {
+  list-style-type: lower-roman;
+}
+
+.editor-ol > .editor-ol > .editor-ol > .editor-ol {
+  list-style-type: decimal-leading-zero;
+}
+
+.editor-ol > .editor-ol > .editor-ol > .editor-ol > .editor-ol {
+  list-style-type: upper-alpha;
+}
+
+.editor-ol > .editor-ol > .editor-ol > .editor-ol > .editor-ol > .editor-ol {
+  list-style-type: upper-roman;
 }
