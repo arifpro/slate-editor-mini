@@ -8,6 +8,7 @@ const InsertImageButton = () => {
     const editor = useSlateStatic();
     return (
         <Button
+            title="Image Link"
             onMouseDown={(event) => {
                 event.preventDefault();
                 // eslint-disable-next-line no-alert

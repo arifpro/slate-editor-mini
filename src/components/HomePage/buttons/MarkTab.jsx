@@ -8,6 +8,7 @@ const MarkTab = ({ format, icon, setSelectedText }) => {
 
     return (
         <Button
+            title={format}
             active={isMarkActive(editor, format)}
             onMouseDown={(event) => {
                 event.preventDefault();

@@ -26,7 +26,7 @@ const UploadImageButton = () => {
 
     return (
         <div
-            className="choose_file"
+            title="Upload Image"
             style={{
                 position: 'relative',
                 display: 'inline-block',

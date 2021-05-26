@@ -12,7 +12,7 @@ const CancelButton = ({ setValue }) => {
     };
 
     return (
-        <Button style={{ color: 'tomato' }} onClick={onCancel}>
+        <Button title="Cancel" style={{ color: 'tomato' }} onClick={onCancel}>
             <MdCancel />
         </Button>
     );

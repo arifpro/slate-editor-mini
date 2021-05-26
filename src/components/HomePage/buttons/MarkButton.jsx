@@ -8,6 +8,7 @@ const MarkButton = ({ format, icon }) => {
 
     return (
         <Button
+            title={format}
             active={isMarkActive(editor, format)}
             onMouseDown={(event) => {
                 event.preventDefault();
