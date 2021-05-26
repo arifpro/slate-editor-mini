@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { MdCloudUpload } from 'react-icons/md';
 import { useSlateStatic } from 'slate-react';
-import { Button } from '../custom';
+import { Button } from '../plugins';
 import { insertImage } from '../helper';
 
 // eslint-disable-next-line arrow-body-style
@@ -48,6 +48,7 @@ const UploadImageButton = () => {
                     top: 0,
                     left: 0,
                     opacity: 0,
+                    height: 0,
                     width: '16px',
                 }}
             />

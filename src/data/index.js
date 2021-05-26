@@ -8,7 +8,7 @@ const initialValue = [
             { text: 'much', italic: true },
             { text: ' better than a ' },
             { text: '<textarea>', code: true },
-            { text: '!' },
+            { text: '! ' },
             {
                 text: 'In addition to nodes that contain editable text, you can also create other types of nodes, like images or videos.',
             },
