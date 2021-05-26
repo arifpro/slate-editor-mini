@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable no-restricted-syntax */
 import isHotkey from 'is-hotkey';
@@ -80,31 +81,31 @@ const CustomSlateEditor = () => {
                     }
 
                     // shift+tab
-                    if (e.shiftKey) {
-                        if (e.shiftKey && e.key === 'Tab') {
-                            e.preventDefault();
-                            if (selectedText?.format === 'indent') {
-                                isMarkActive(editor, 'indent');
-                                toggleMark(editor, 'indent');
-                                console.log('shift+tab => ', selectedText);
-                            }
-                        }
-                    }
+                    // if (e.shiftKey) {
+                    //     if (e.shiftKey && e.key === 'Tab') {
+                    //         e.preventDefault();
+                    //         if (selectedText?.format === 'indent') {
+                    //             isMarkActive(editor, 'indent');
+                    //             toggleMark(editor, 'indent');
+                    //             console.log('shift+tab => ', selectedText);
+                    //         }
+                    //     }
+                    // }
 
                     // tab
-                    if (e.key === 'Tab') {
-                        if (!e.shiftKey && e.key === 'Tab') {
-                            e.preventDefault();
-                            if (selectedText?.format === 'indent') {
-                                isMarkActive(editor, 'indent');
-                                toggleMark(editor, 'indent');
-                                console.log('tab => ', selectedText);
-                            }
-                        }
-                    }
+                    // if (e.key === 'Tab') {
+                    //     if (!e.shiftKey && e.key === 'Tab') {
+                    //         e.preventDefault();
+                    //         if (selectedText?.format === 'indent') {
+                    //             isMarkActive(editor, 'indent');
+                    //             toggleMark(editor, 'indent');
+                    //             console.log('tab => ', selectedText);
+                    //         }
+                    //     }
+                    // }
                 }}
             />
-            <BlockCount blockLimitation={10} setIsSaveBtnOn={setIsSaveBtnOn} />
+            <BlockCount blockLimitation={null} setIsSaveBtnOn={setIsSaveBtnOn} />
         </Slate>
     );
 };

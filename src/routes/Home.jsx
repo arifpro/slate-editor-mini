@@ -7,10 +7,11 @@ const Home = () => (
             style={{
                 margin: '5rem 0',
                 display: 'flex',
-                justifyContent: 'center',
+                alignItems: 'center',
                 flexDirection: 'column',
             }}
         >
+            <h2 style={{ fontFamily: 'monospace', color: '#3c444c' }}>Slate Editor Mini</h2>
             <div style={{ width: '600px', background: 'white' }}>
                 <CustomSlateEditor />
             </div>
