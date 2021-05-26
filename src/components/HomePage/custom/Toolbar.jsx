@@ -28,10 +28,11 @@ const Menu = forwardRef(({ className, ...props }, ref) => (
             css`
                 & > * {
                     display: inline-block;
+                    margin-right: 15px;
                 }
 
                 & > * + * {
-                    margin-left: 15px;
+                    // margin-right: 15px;
                 }
             `
         )}

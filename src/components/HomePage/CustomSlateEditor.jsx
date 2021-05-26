@@ -68,6 +68,7 @@ const CustomSlateEditor = () => {
                 style={{ padding: '0.5rem 1rem' }}
                 renderElement={renderElement}
                 renderLeaf={renderLeaf}
+                ref={textArea}
                 placeholder="Enter some text…"
                 spellCheck
                 autoFocus

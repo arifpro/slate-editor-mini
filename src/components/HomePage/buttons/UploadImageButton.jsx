@@ -48,6 +48,7 @@ const UploadImageButton = () => {
                     top: 0,
                     left: 0,
                     opacity: 0,
+                    height: 0,
                     width: '16px',
                 }}
             />
