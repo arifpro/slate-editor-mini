@@ -18,7 +18,7 @@ const SaveButton = ({ value, isSaveBtnOn }) => {
         <Button
             style={{ color: isSaveBtnOn ? '#28b728' : 'lightslategray' }}
             title="Save"
-            primary={false}
+            // primary={false}
             onClick={() => onSave()}
         >
             {isSaveBtnOn ? <MdSave /> : <RiSave2Line />}
