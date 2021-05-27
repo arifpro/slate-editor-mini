@@ -43,7 +43,8 @@ const UploadImageButton = () => {
                 accept="image/*"
                 onChange={(e) => handleChange(e.target.files)}
                 style={{
-                    '-webkit-appearance': 'none',
+                    // '-webkit-appearance': 'none',
+                    WebkitAppearance: 'none',
                     position: 'absolute',
                     top: 0,
                     left: 0,
