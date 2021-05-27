@@ -54,7 +54,7 @@ const CustomSlateEditor = () => {
     const [isSaveBtnOn, setIsSaveBtnOn] = useState(true);
 
     return (
-        <Slate editor={editor} ref={textArea} value={value} onChange={(v) => setValue(v)}>
+        <Slate editor={editor} refs={textArea} value={value} onChange={(v) => setValue(v)}>
             <Toolbar style={{ padding: '1rem', margin: 0 }}>
                 <MarkButton format="bold" icon={<MdFormatBold />} />
                 <MarkButton format="italic" icon={<MdFormatItalic />} />
@@ -63,8 +63,8 @@ const CustomSlateEditor = () => {
                 <BlockButton format="heading-one" icon={<MdLooksOne />} />
                 <BlockButton format="heading-two" icon={<MdLooksTwo />} />
                 <BlockButton format="block-quote" icon={<MdFormatQuote />} />
-                <BlockButton format="numbered-list" icon={<MdFormatListNumbered />} />
                 <BlockButton format="bulleted-list" icon={<MdFormatListBulleted />} />
+                <BlockButton format="numbered-list" icon={<MdFormatListNumbered />} />
                 <InsertImageButton />
                 <UploadImageButton />
                 <MarkTab
@@ -79,7 +79,7 @@ const CustomSlateEditor = () => {
                 style={{ padding: '0.5rem 1rem' }}
                 renderElement={renderElement}
                 renderLeaf={renderLeaf}
-                ref={textArea}
+                refs={textArea}
                 placeholder="Enter some text…"
                 spellCheck
                 autoFocus

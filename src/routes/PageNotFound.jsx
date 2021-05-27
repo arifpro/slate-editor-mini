@@ -1,6 +1,9 @@
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 
+// load pages by on hover (Eager Loading)
+const home = () => import('./Home');
+
 const PageNotFound = () => (
     <div>
         <Helmet>
@@ -16,7 +19,7 @@ const PageNotFound = () => (
             }}
         >
             <h2 style={{ fontFamily: 'monospace', color: '#3c444c' }}>Page Not Found</h2>
-            <Link to="/">
+            <Link to="/" onMouseOver={() => home()}>
                 <button
                     type="button"
                     style={{
